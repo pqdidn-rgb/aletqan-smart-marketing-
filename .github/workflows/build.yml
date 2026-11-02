@@ -1,0 +1,35 @@
+name: بناء تطبيق الإتقان
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: تحميل ملفات المشروع
+        uses: actions/checkout@v4
+
+      - name: تجهيز جافا
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: تجهيز أندرويد
+        uses: android-actions/setup-android@v3
+
+      - name: بناء ملف APK
+        run: |
+          chmod +x gradlew || true
+          gradle assembleDebug
+
+      - name: حفظ ملف APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: Aletqan-APK
+          path: app/build/outputs/apk/debug/app-debug.apk
