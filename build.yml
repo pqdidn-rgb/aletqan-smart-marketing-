@@ -1,0 +1,27 @@
+name: بناء تطبيق الإتقان
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: تحميل المشروع
+        uses: actions/checkout@v4
+
+      - name: تثبيت جافا
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: تثبيت أندرويد
+        uses: android-actions/setup-android@v3
+
+      - name: بناء التطبيق
+        run: gradle assembleDebug
